@@ -8,8 +8,8 @@ import Axios from "axios";
 import UserContext from "../context/UserContext";
 import ErrorNotice from "../Errormsg/ErrorNotice";
 
-const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
-// const herokuBaseURL = "/";
+// const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
+const herokuBaseURL = "/";
 
 export default function Register() {
   const [username, setUsername] = useState("");

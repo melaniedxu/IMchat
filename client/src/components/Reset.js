@@ -7,8 +7,8 @@ import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import ErrorNotice from "../Errormsg/ErrorNotice";
 
-const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
-// const herokuBaseURL = "/";
+// const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
+const herokuBaseURL = "/";
 
 export default function Reset() {
   const [email, setEmail] = useState("");

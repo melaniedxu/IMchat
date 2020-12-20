@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import ErrorNotice from "../Errormsg/ErrorNotice";
 
 // const herokuBaseURL = 'https://server2-heroku-new.herokuapp.com/';
-const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
+const herokuBaseURL = "/";
 
 export default function CreatePost() {
   const history = useHistory();
