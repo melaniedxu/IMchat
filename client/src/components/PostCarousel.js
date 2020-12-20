@@ -15,7 +15,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import Carousel from "react-bootstrap/Carousel";
 
-// const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
+// const herokuBaseURL = 'https://server2-heroku-new.herokuapp.com/';
 const herokuBaseURL = "/";
 
 export default function PostCarousel() {
@@ -30,6 +30,7 @@ export default function PostCarousel() {
       });
       // console.log(result);
       setData(result.data.posts);
+      console.log(data);
     };
     getPosts();
   }, []);
