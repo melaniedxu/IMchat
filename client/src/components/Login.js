@@ -44,7 +44,7 @@ const Login = () => {
       // if (!loggedIn) setLoggedIn(true);
       localStorage.setItem("auth-token", loginRes.data.token);
       localStorage.setItem("twilio-token", twilioRes.token);
-      history.push("/main");
+      history.push("/");
     } catch (err) {
       // eslint-disable-next-line no-unused-expressions
       err.response.data.msg && setError(err.response.data.msg);
