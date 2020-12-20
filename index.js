@@ -50,7 +50,7 @@ app.use(express.static("client/build"));
 
 // set up routes
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 app.use("/users", require("./routes/userRouter"));
 app.use("/posts", require("./routes/postRouter"));
