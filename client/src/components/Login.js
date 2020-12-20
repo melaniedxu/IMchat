@@ -10,8 +10,8 @@ import UserContext from "../context/UserContext";
 import ErrorNotice from "../Errormsg/ErrorNotice";
 import { retrieveToken } from "../network/getData";
 
-// const herokuBaseURL = 'https://server2-heroku-new.herokuapp.com/';
-const herokuBaseURL = "/";
+const herokuBaseURL = "https://limitless-earth-29006.herokuapp.com/";
+// const herokuBaseURL = "/";
 
 const Login = () => {
   const [username, setUsername] = useState("");
