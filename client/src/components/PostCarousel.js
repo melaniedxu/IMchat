@@ -8,7 +8,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import { Carousel } from "react-responsive-carousel";
-
+import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
