@@ -75,6 +75,9 @@ export default function PostCarousel() {
         />
         <p className="legend">
           No new posts yet. Please refresh the page or come back later!
+          <h5>
+            <Link to="/">Home</Link>
+          </h5>
         </p>
       </div>
     </Carousel>
