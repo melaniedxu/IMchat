@@ -13,6 +13,8 @@
     "axios": "^0.21.0",
     "blob-util": "^2.0.2",
     "camelcase": "^6.2.0",
+    "chromedriver": "^87.0.4",
+    "geckodriver": "^1.21.1",
     "react": "^17.0.1",
     "react-chat-ui": "^0.4.0",
     "react-dom": "^17.0.1",
@@ -23,6 +25,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-search-box": "^2.0.2",
+    "react-test-renderer": "^17.0.1",
+    "selenium-webdriver": "^4.0.0-alpha.8",
     "twilio-chat": "^4.0.0",
     "twilio-video": "^2.10.0",
     "web-vitals": "^0.2.4"
