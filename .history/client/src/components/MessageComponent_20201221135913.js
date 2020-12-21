@@ -328,7 +328,7 @@ function MessageChat({ user, contactList }) {
     chatClient.on('conversationLeft', (thisConversation) => {
       setConversations([...conversations.filter((it) => it !== thisConversation)]);
     });
-  }, 5000);
+  }, 10000);
 
   useEffect(() => {
     if (!twilioToken) return;
@@ -507,7 +507,7 @@ function MessageChat({ user, contactList }) {
       const mediaType = recordedBlob.blob.type;
       // const arrayBuffer = await recordedBlob.blob.arrayBuffer();
       // console.log('[onData] arrayBuffer', arrayBuffer);
-      const mediaSID = await twilioMediaUpload(recordedBlob.blob, mediaType);
+      const mediaSID = await twilioMediaUpload(recordedBlob, mediaType);
       console.log('[onData] twilio media upload: ', mediaSID);
       sendTwilioMessage(userId, mediaSID, conversationId);
     };

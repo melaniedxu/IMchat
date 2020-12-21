@@ -328,7 +328,7 @@ function MessageChat({ user, contactList }) {
     chatClient.on('conversationLeft', (thisConversation) => {
       setConversations([...conversations.filter((it) => it !== thisConversation)]);
     });
-  }, 5000);
+  }, 10000);
 
   useEffect(() => {
     if (!twilioToken) return;
