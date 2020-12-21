@@ -61,7 +61,7 @@ const routes = [
     guest: true,
   },
   {
-    path: "/reset/:token",
+    path: "/newPassword",
     component: NewPassword,
     noExact: true,
     guest: true,

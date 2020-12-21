@@ -24,7 +24,7 @@ export default function Reset() {
         email,
       };
       await Axios.put(`${herokuBaseURL}users/reset`, userEmail);
-      history.push("/login");
+      history.push("/newPassword");
     } catch (err) {
       err.response.data.msg && setError(err.response.data.msg);
     }
