@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import imgDeafault from '../images/default.jpg';
+import Axios from "axios";
 
 class Picture extends Component {
   constructor() {
@@ -21,6 +22,7 @@ class Picture extends Component {
   createImage(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
+      console.log('image file is ', file ,e.target.result)
       this.setState({ image: e.target.result });
     };
     reader.readAsDataURL(file);

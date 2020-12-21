@@ -1,17 +1,22 @@
-import React, { Component } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
+
+import { BrowserRouter as Router } from 'react-router-dom';
+import {
+  getContacts, joinChat, sendMessage, getMessagesByConversation,
+  deleteTwilioMessage, getAllUsers, getFriendList,getUserprofile
+} from '../network/getData';
+import { Link, useHistory } from "react-router-dom";
 import Picture from './Picture';
+import UserContext from '../context/UserContext';
+import Pictures from './Pictures'
 
-class Profile extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: 'Kailun Li',
-      friendscount: 10,
-      birthday: `${new Date()}`,
-      createdAt: `${new Date()}`,
-    };
-  }
-
+function Profile() {
+  const [username, setusername] = useState("");
+  const [createDate, setDate] = useState("");
+  const { userData } = useContext(UserContext);
+  // console.log('user data in profile is -----', userData.user)
   // changepassword = () => {
   //   return function () {
   //     let password = prompt("Please enter your password");
@@ -24,10 +29,21 @@ class Profile extends Component {
   //   };
   // };
 
-  render() {
-    const {
-      name, friendscount, birthday, createdAt,
-    } = this.state;
+  const handleRefresh = async () => {
+
+    const userinfo = await getUserprofile(userData.user.id);
+    // const createD = userinfo[0].updatedAt
+    const createD = userinfo[0].createdAt
+    setDate(createD)
+  console.log('user data in profile is -----', createD);
+
+  }
+
+  useEffect(() => {
+    setusername(userData.user.username);
+    handleRefresh();
+  });
+  
     return (
       <div className="container">
         <div className="row">
@@ -36,7 +52,7 @@ class Profile extends Component {
               <div className="card-body">
                 <div className="card-title mb-4">
                   <div className="d-flex justify-content-start">
-                    <Picture />
+                  <Pictures userid = {userData.user.id} />
                     <div className="middle" style={{ width: '70%' }}>
                       <h2
                         className="d-block"
@@ -44,11 +60,6 @@ class Profile extends Component {
                       >
                         {name}
                       </h2>
-                      <h6 className="d-block">
-                        {friendscount}
-                        {' '}
-                        friends
-                      </h6>
                     </div>
                   </div>
                 </div>
@@ -68,25 +79,13 @@ class Profile extends Component {
                         <div className="row">
                           <div className="col-sm-3 col-md-2 col-5">
                             <div>
-                              Full Name
+                              User Name
                             </div>
                           </div>
                           <div className="col-md-8 col-6">
-                            {name}
+                            {username}
                           </div>
                         </div>
-                        <hr />
-                        <div className="row">
-                          <div className="col-sm-3 col-md-2 col-5">
-                            <div>
-                              Birthday
-                            </div>
-                          </div>
-                          <div className="col-md-8 col-6">
-                            {birthday}
-                          </div>
-                        </div>
-
                         <hr />
                         <div className="row">
                           <div className="col-sm-3 col-md-2 col-5">
@@ -95,17 +94,14 @@ class Profile extends Component {
                             </div>
                           </div>
                           <div className="col-md-8 col-6">
-                            {createdAt}
+                            {createDate}
                           </div>
                         </div>
                         <hr />
-                        <button id="change" type="button">
-                          <span>Change Password</span>
-                        </button>
+                        <h6>
+        <Link to="/reset">Click to reset password</Link>
+      </h6>
                         <hr />
-                        <button id="deactive" type="button">
-                          <span>Deactive Account</span>
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -116,7 +112,6 @@ class Profile extends Component {
         </div>
       </div>
     );
-  }
-}
+  };
 
 export default Profile;

@@ -18,6 +18,9 @@ export default function Home() {
         <Link to="/main">Chat</Link>
       </h5>
       <h5>
+        <Link to="/profile">Profile</Link>
+      </h5>
+      <h5>
         <Link to="/create">New Post</Link>
       </h5>
       <h5>

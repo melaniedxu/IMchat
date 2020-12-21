@@ -498,3 +498,45 @@ export const deleteMediaConversation = async (conversationId, contactcid) => {
   }
   return res1.data;
 };
+
+export const getUserprofile = async (username) => {
+  const token = localStorage.getItem('auth-token');
+  const res = await axios.get(`${herokuBaseURL}users/getUserProfile`, {
+    headers: { 'x-auth-token': token },
+    params: {
+      username,
+    },
+  });
+  // console.log(res);
+  // const res = mockData.getContactsResp;
+  // return res.data.data;
+  if (res.status !== 200) {
+    console.log('[getUserProfile error]', res.error);
+    return null;
+  }
+  if (!res.data) return null;
+  // console.log(res.data);
+  return res.data;
+};
+
+
+export const saveAvatar = async (userid, avalink) => {
+  const token = localStorage.getItem('auth-token');
+  // const params = `username=${contactId}&contactname=${recipientId}`;
+  console.log('getData back end save avatar');
+  const res = await axios.get(
+    `${herokuBaseURL}users/saveavatar`, {
+      headers: { 'x-auth-token': token },
+      params: {
+        user: userid,
+        link: avalink,
+      },
+    },
+  );
+  if (res.status !== 200) {
+    console.log('[save avatar error]', res.error);
+    return null;
+  }
+  console.log('front end save avatar success');
+  return null
+};

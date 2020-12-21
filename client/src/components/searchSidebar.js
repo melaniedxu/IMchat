@@ -18,6 +18,11 @@ import ReactSearchBox from 'react-search-box';
 import DeleteContactButton from './DeleteContactButton';
 import AddContactsComponent from './AddContactsComponent';
 import './ContactComponent.css';
+import {
+  getMessages, sendMessage, retrieveToken, createConversation,
+  fetchConversation, twilioMediaUpload, sendTwilioMessage,
+  getMessagesByConversation, deleteContact, addContact,
+} from '../network/getData';
 
 const useStyles = makeStyles({
   drawerPaper: {
@@ -58,6 +63,11 @@ export default function SearchSideBar({ contactList, data, currentUserId }) {
     </ListItem>
   ));
 
+  const addContactbutt = async (userid, contactid) => {
+    await addContact(userid, contactid);
+    alert('Request Sent!');
+    console.log('add contact in front end button', userid, contactid);
+  };
   //   const list = (anchor) => (
   //     <div
   //       className={clsx(classes.list, {
@@ -113,6 +123,7 @@ export default function SearchSideBar({ contactList, data, currentUserId }) {
               placeholder="suggested contacts"
               data={data}
               id="searchBox"
+              onSelect={(record) => addContactbutt(currentUserId, record.key)}
             />
             <div id="alluserlist">
               <List>

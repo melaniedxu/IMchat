@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please enter the password"],
       minlength: 5,
     },
+    avatarlink: String,
     resetLink: {
       data: String,
       default: "",

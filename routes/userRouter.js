@@ -95,6 +95,7 @@ router.post("/register", async (req, res) => {
       username,
       email,
       password: hashedPw,
+      avatarlink:'',
     });
     const savedUser = await newUser.save();
     const self = await User.findById(savedUser._id);
@@ -494,7 +495,7 @@ router.get("/addfriend", auth, async (req, res) => {
   try {
     twilioClient.conversations.conversations
       .create({
-        uniqueName: contact,
+        // uniqueName: contact,
       })
       .then((conversation) => {
         console.log("conversation sid", conversation.sid);
@@ -714,5 +715,32 @@ router.post("/new-password", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get("/getUserProfile", auth, async (req, res) => {
+  const user = req.query.username;
+  console.log("getUserProfile backend inside",user);
+  const userinfo = await User.find({ _id: user});
+  console.log("current user info is:", userinfo);
+  console.log(userinfo);
+  res.status(200).send(userinfo);
+});
+
+// save user avatarl link
+router.get("/saveavatar", auth, async (req, res) => {
+  const user = req.query.user;
+  const avalink = req.query.link;
+  console.log('saveavatar inside backend', user, avalink)
+  // console.log('user, contact', user, contact);
+  await User.findByIdAndUpdate(
+    (user),
+    { avatarlink: avalink},
+    (err, res) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      }
+    }
+  );
+});
+
 
 module.exports = router;
