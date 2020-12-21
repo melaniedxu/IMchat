@@ -1,18 +1,21 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable quotes */
+// /* eslint-disable react/jsx-filename-extension */
+// /* eslint-disable jsx-a11y/label-has-associated-control */
+// /* eslint-disable no-unused-expressions */
+// /* eslint-disable quotes */
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import ErrorNotice from "../Errormsg/ErrorNotice";
+
+// const herokuBaseURL = "https://server2-heroku-new.herokuapp.com/";
+const herokuBaseURL = "/";
 
 export default function NewPassword() {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   // const { token } = useParams();
-  console.log(token);
+  // console.log(token);
   const [error, setError] = useState("");
   const history = useHistory();
 

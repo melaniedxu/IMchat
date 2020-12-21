@@ -32,7 +32,7 @@ export default function Reset() {
 
   return (
     <div>
-      <h2>Get a Reset Link</h2>
+      <h2>Get a Reset Token</h2>
       {error && (
         <ErrorNotice message={error} clearError={() => setError(undefined)} />
       )}

@@ -8,7 +8,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import { Carousel } from "react-responsive-carousel";
-import { Link } from "react-router-dom";
+
 import UserContext from "../context/UserContext";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -30,7 +30,6 @@ export default function PostCarousel() {
       });
       // console.log(result);
       setData(result.data.posts);
-      console.log(data);
     };
     getPosts();
   }, []);
@@ -75,9 +74,6 @@ export default function PostCarousel() {
         />
         <p className="legend">
           No new posts yet. Please refresh the page or come back later!
-          <h5>
-            <Link to="/">Home</Link>
-          </h5>
         </p>
       </div>
     </Carousel>

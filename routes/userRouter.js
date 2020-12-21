@@ -234,7 +234,7 @@ router.post("/login", async (req, res) => {
 });
 
 // delete user/deactive
-router.delete('/delete', auth, async (req, res) => {
+router.delete("/delete", auth, async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.user);
     res.json(deletedUser);
@@ -270,36 +270,36 @@ router.get("/", auth, async (req, res) => {
   });
 });
 
-router.get('/contacts', auth, async (req, res) => {
+router.get("/contacts", auth, async (req, res) => {
   const user = req.query.username;
   // console.log(user);
   const contactList = await Contact.aggregate([
     {
       $match: {
-        $or:
-        [{
-          user1: ObjectId(user),
-        }, {
-          user2: ObjectId(user),
-        }],
+        $or: [
+          {
+            user1: ObjectId(user),
+          },
+          {
+            user2: ObjectId(user),
+          },
+        ],
       },
     },
     {
-      $lookup:
-      {
-        from: 'users',
-        localField: 'user1',
-        foreignField: '_id',
-        as: 'fromUsers1',
+      $lookup: {
+        from: "users",
+        localField: "user1",
+        foreignField: "_id",
+        as: "fromUsers1",
       },
     },
     {
-      $lookup:
-      {
-        from: 'users',
-        localField: 'user2',
-        foreignField: '_id',
-        as: 'fromUsers2',
+      $lookup: {
+        from: "users",
+        localField: "user2",
+        foreignField: "_id",
+        as: "fromUsers2",
       },
     },
     {
@@ -308,12 +308,14 @@ router.get('/contacts', auth, async (req, res) => {
       },
     },
   ]);
-  console.log('[contactList]', contactList);
+  console.log("[contactList]", contactList);
   const newList = contactList.map((contactObj) => {
-    const userContact = (String(contactObj.user1) === user) ? contactObj.user2 : contactObj.user1;
-    const nickname = (String(contactObj.user1) === user)
-      ? contactObj.fromUsers2[0].username
-      : contactObj.fromUsers1[0].username;
+    const userContact =
+      String(contactObj.user1) === user ? contactObj.user2 : contactObj.user1;
+    const nickname =
+      String(contactObj.user1) === user
+        ? contactObj.fromUsers2[0].username
+        : contactObj.fromUsers1[0].username;
     console.log(userContact, nickname);
     const finalObj = {
       username: nickname,
@@ -334,21 +336,14 @@ router.get("/messages", auth, async (req, res) => {
   const messages = await Message.aggregate([
     {
       $match: {
-        $or:
-      [
-        {
-          $and: [
-            { sender: ObjectId(user) },
-            { receiver: ObjectID(contact) },
-          ],
-        },
-        {
-          $and: [
-            { sender: ObjectId(contact) },
-            { receiver: ObjectID(user) },
-          ],
-        },
-      ],
+        $or: [
+          {
+            $and: [{ sender: ObjectId(user) }, { receiver: ObjectID(contact) }],
+          },
+          {
+            $and: [{ sender: ObjectId(contact) }, { receiver: ObjectID(user) }],
+          },
+        ],
       },
     },
     // { $group: { _id: null, count: { $sum: 1 } } },
@@ -356,18 +351,23 @@ router.get("/messages", auth, async (req, res) => {
   console.log(messages);
   // update messages' read status
   try {
-    const readMessages = Promise.all((messages).map(async (msg) => {
-      if (msg.sender === user) {
-        console.log('[sender === user]', user);
-        return null;
-      }
-      const newMessage = await Message.updateOne({ _id: ObjectId(msg._id) }, {
-        read: true,
-        delivered: true,
-      });
-      // console.log('newMessage', newMessage);
-      return newMessage;
-    }));
+    const readMessages = Promise.all(
+      messages.map(async (msg) => {
+        if (msg.sender === user) {
+          console.log("[sender === user]", user);
+          return null;
+        }
+        const newMessage = await Message.updateOne(
+          { _id: ObjectId(msg._id) },
+          {
+            read: true,
+            delivered: true,
+          }
+        );
+        // console.log('newMessage', newMessage);
+        return newMessage;
+      })
+    );
     console.log(readMessages);
   } catch (error) {
     console.log(error);
@@ -375,17 +375,15 @@ router.get("/messages", auth, async (req, res) => {
   res.status(200).send(messages);
 });
 
-router.post('/message', auth, async (req, res) => {
-  const {
-    to, from, message, id,
-  } = req.body;
+router.post("/message", auth, async (req, res) => {
+  const { to, from, message, id } = req.body;
   if (!to || !from || !message) {
-    return res.status(400).json({ msg: 'Please enter the required fields' });
+    return res.status(400).json({ msg: "Please enter the required fields" });
   }
   const newMessage = new Message({
     sender: ObjectId(from),
     receiver: ObjectId(to),
-    type: 'text',
+    type: "text",
     content: message,
     delivered: false,
     read: false,
@@ -393,35 +391,44 @@ router.post('/message', auth, async (req, res) => {
   try {
     const savedMessage = newMessage.save();
     res.json(savedMessage);
-    const newContact = await Contact.updateOne({ _id: ObjectId(id) }, {
-      $inc: {
-        numMessages: 1,
-      },
-    });
-    console.log('newContact', newContact);
+    const newContact = await Contact.updateOne(
+      { _id: ObjectId(id) },
+      {
+        $inc: {
+          numMessages: 1,
+        },
+      }
+    );
+    console.log("newContact", newContact);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-router.delete('/messages', auth, async (req, res) => {
+router.delete("/messages", auth, async (req, res) => {
   const user = req.query.username;
   const contact = req.query.contactname;
   // console.log('user, contact', user, contact);
-  const messages = await Message.remove({ sender: ObjectId(user), receiver: ObjectId(contact) });
+  const messages = await Message.remove({
+    sender: ObjectId(user),
+    receiver: ObjectId(contact),
+  });
   console.log(messages);
   res.status(200).send(messages);
 });
 
 // delete whole conversation
-router.delete('/conversation', auth, async (req, res) => {
+router.delete("/conversation", auth, async (req, res) => {
   const user = req.query.username;
   const contact = req.query.contactname;
   // console.log('user, contact', user, contact);
-  const messages = await Message.remove(
-    { $or: [{ sender: ObjectId(user), receiver: ObjectId(contact) }, { sender: ObjectId(contact), receiver: ObjectId(user) }] },
-  );
-  console.log('conversation removed backend----->', user, contact, messages);
+  const messages = await Message.remove({
+    $or: [
+      { sender: ObjectId(user), receiver: ObjectId(contact) },
+      { sender: ObjectId(contact), receiver: ObjectId(user) },
+    ],
+  });
+  console.log("conversation removed backend----->", user, contact, messages);
   res.status(200).send(messages);
 });
 
@@ -455,7 +462,7 @@ router.delete("/onemessage", auth, async (req, res) => {
 });
 
 // add a contact
-router.get('/addfriend', auth, async (req, res) => {
+router.get("/addfriend", auth, async (req, res) => {
   const user = req.query.username;
   const contact = req.query.contactname;
   // console.log('user, contact', user, contact);
@@ -565,60 +572,63 @@ router.get("/getAllUsers", auth, async (req, res) => {
 });
 
 // get the friend list of a user
-router.get('/friendlist', auth, async (req, res) => {
+router.get("/friendlist", auth, async (req, res) => {
   const user = req.query.username;
-  console.log('get friendlist backend');
+  console.log("get friendlist backend");
   const contactList = await Contact.aggregate([
     {
       $match: {
-        $or:
-        [{
-          user1: ObjectId(user),
-        }, {
-          user2: ObjectId(user),
-        }],
+        $or: [
+          {
+            user1: ObjectId(user),
+          },
+          {
+            user2: ObjectId(user),
+          },
+        ],
       },
     },
     {
-      $lookup:
-      {
-        from: 'users',
-        localField: 'user1',
-        foreignField: '_id',
-        as: 'fromUsers1',
+      $lookup: {
+        from: "users",
+        localField: "user1",
+        foreignField: "_id",
+        as: "fromUsers1",
       },
     },
     {
-      $lookup:
-      {
-        from: 'users',
-        localField: 'user2',
-        foreignField: '_id',
-        as: 'fromUsers2',
+      $lookup: {
+        from: "users",
+        localField: "user2",
+        foreignField: "_id",
+        as: "fromUsers2",
       },
     },
   ]);
   const newList = contactList.map((contactObj) => {
-    const userContact = (String(contactObj.user1) === user) ? contactObj.user2 : contactObj.user1;
-    const nickname = (String(contactObj.user1) === user)
-      ? contactObj.fromUsers2[0].username
-      : contactObj.fromUsers1[0].username;
+    const userContact =
+      String(contactObj.user1) === user ? contactObj.user2 : contactObj.user1;
+    const nickname =
+      String(contactObj.user1) === user
+        ? contactObj.fromUsers2[0].username
+        : contactObj.fromUsers1[0].username;
     console.log(userContact, nickname);
     const finalObj = nickname;
     return finalObj;
   });
-  console.log('get friend list successfully', newList);
+  console.log("get friend list successfully", newList);
   res.status(200).send(newList);
 });
 
-router.get('/setconversationidnull', async (req, res) => {
-  console.log('set conversation id to null in backend');
+router.get("/setconversationidnull", async (req, res) => {
+  console.log("set conversation id to null in backend");
   const cid = req.query.contactcid;
   // console.log('user, contact', user, contact);
   const makeitnull = await Contact.updateOne(
-    { _id: ObjectId(cid) }, { conversationSID: '' },
+    { _id: ObjectId(cid) },
+    { conversationSID: "" }
   );
-  console.log('reset conversation id to null in back end ', makeitnull);
+  console.log("reset conversation id to null in back end ", makeitnull);
   res.status(200).send(makeitnull);
 });
 
@@ -638,8 +648,8 @@ router.put("/reset", async (req, res) => {
       from: "noreply@ChatApp.com",
       to: email,
       subject: "Reset Password",
-      html: `<h2>Please click on the given link to reset your password. The link will expire in 20 minutes.</h2>
-        <p>${process.env.CLIENT_URL}/reset/${token}</p>
+      html: `<h2>Please copy the token to reset your password. The token will expire in 20 minutes.</h2>
+        <p>${token}</p>
         `,
     };
     await user.updateOne({ resetLink: token }, (err, success) => {
