@@ -46,20 +46,12 @@ mongoose
     console.log(err);
   });
 
-// app.use(express.static("client/build"));
-if (process.env.NODE_ENV == "production") {
-  app.use(express.static("client/build"));
-  const path = require("path");
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
-// set up routes
+app.use(express.static("client/build"));
 
-// app.get("/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/build/index.html"));
-// });
-app.use(express.json());
+// set up routes
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 app.use("/users", require("./routes/userRouter"));
 app.use("/posts", require("./routes/postRouter"));
 app.use("/messages", require("./routes/twilioRouter"));
