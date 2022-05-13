@@ -1,0 +1,9 @@
+{
+    "id": "{TotalBookCount} books available",
+    "=1": {
+        "msg": "One book available"
+    },
+    "other": {
+        "msg": "{TotalBookCount} books available"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "id": "{TotalBookCount} abxx cd",
+    "=1": {
+        "msg": "b cd"
+    },
+    "other": {
+        "msg": "{TotalBookCount} ab cd"
+    }
+}
